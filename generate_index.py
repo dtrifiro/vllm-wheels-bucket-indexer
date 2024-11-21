@@ -51,7 +51,10 @@ class S3Indexer:
         logger.info("Indexing bucket at s3://%s", self.bucket_name)
 
         wheels = list(
-            self.fs.find("s3://{self.bucket_name}/"),
+            filter(
+                lambda name: name.endswith(".whl"),
+                self.fs.find("s3://{self.bucket_name}/"),
+            )
         )
 
         with open(self.cache_file, "w") as fh:

@@ -7,6 +7,10 @@ Indexes an s3 bucket for wheel files and generates a `pip` compatible index
 Run the code, might take a while on the first run
 
 ```python
+python -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt # installs s3fs
 python generate_index.py
 ```
 

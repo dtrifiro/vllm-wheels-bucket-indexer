@@ -28,7 +28,7 @@ pip install --extra-index-url=http://localhost:8000/
 # to install the most recent wheel (note the `--pre`)
 pip install --pre --extra-index-url=http://localhost:8000/
 # to install a specific git revision
-git_ref=0057894ef7f8db0d51385aa7254219d7fbd6c784/
+git_ref=0057894ef7f8db0d51385aa7254219d7fbd6c784
 pip install --pre --extra-index-url=http://localhost:8000/${git_ref}
 ```
 

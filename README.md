@@ -34,7 +34,7 @@ pip install --pre --extra-index-url=http://localhost:8000/${git_ref}
 
 ## Production
 
-Run the indexer with `dry_run=False`. This assumes that your environment is set up for AWS (e.g. `AwS_*` env vars are set and that you have write access to the bucket.
+Run the indexer with `dry_run=False`. This assumes that your environment is set up for AWS (e.g. `AWS_*` env vars are set and that you have write access to the bucket.
 
 ```bash
 INDEXER_DRY_RUN=False python generate_index.py

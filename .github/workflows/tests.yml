@@ -1,0 +1,60 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # schedule:
+  #   - cron: "15 1 * * *" # every day at 01:15
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    env:
+      FORCE_COLOR: "1"
+      PRE_COMMIT_COLOR: "always"
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: |
+          pip install -U uv
+          uv --version
+
+      - name: Install deps
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install -r requirements-dev.txt -r requirements.txt
+
+      - name: Lint with ruff
+        run: |
+          source .venv/bin/activate
+          ruff check **/*.py
+
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          pytest -v --cov --cov-config=pyproject.toml --cov-report=xml tests
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v4
+        if: always()
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: coverage.xml
+          fail_ci_if_error: true
